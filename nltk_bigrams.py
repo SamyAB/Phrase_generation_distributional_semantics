@@ -80,7 +80,7 @@ class NltkBigrams :
 						j = j+1
 				
 				#Ajout de la phrase au nouveau corpus		
-				bigram_sents.append(new_sent)
+				self.bigram_sents.append(new_sent)
 		
 		
 	def build_tagged_sents_bigram(self,corpus = brown) :
@@ -108,6 +108,6 @@ class NltkBigrams :
 						j = j+1
 				
 				#Ajout de la phrase au nouveau corpus		
-				tagged_sents_bigram.append(new_tagged_sent)
+				self.tagged_sents_bigram.append(new_tagged_sent)
 		
 		
