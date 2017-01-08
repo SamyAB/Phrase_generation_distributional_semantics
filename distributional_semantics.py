@@ -103,18 +103,45 @@ class DistributionalSemantics :
 		#Résolution du problème des moindres carrés (Least square)
 		W, residus, rang, s = np.linalg.lstsq(p,uv)
 		
-		#Retourner la valeur de la matrice de composition de la relation "relation" 
+		#Retourner la valeur de la matrice de décomposition de la relation "relation" 
 		return W
 	
 	@staticmethod
-	def decomposition_from_composition_w(Lw,w,relation):
+	def decomposition_from_composition_w(tagged_sents,Lw,w,relation):
 		'''Méthode de calcul de l'inverse d'une composition pour obtenir une matrice de décomposition
 		En entrée :
+		| tagged_sents : liste de listes de paire mot/tag du corpus d'ou vient Lw 
 		| Lw : dictionnaire à clé de mots et valeurs vecteurs de sens des mots
-		| Wc : Matrice de composition pour la relation "relation"
+		| w : Matrice de composition pour la relation "relation"
+		| relation : relation syntaxique r de Wr sous la forme de chaine de caractères
 		En sortie :
 		| W : matrice de décomposition pour la relation syntaxique "relation" selon la matrice de comoposition "w"
 		'''
+		
+		#Déclaration des matrices des vecteurs des sens des mots composant de la relation 
+		U = []
+		V = []
+		
+		#Recherche des vecteurs de sens représentant les éléments sattisfaisant la relation "relation" :
+		#Parcours de toutes les phrases du corpus
+		for tagged_sent in tagged_sents:
+			#Parcours des mots du corpus à la recherches des bons tags
+			for i in range(0, len(tagged_sent)-1):
+				if(tagged_sent[i][1]+tagged_sent[i+1][1] == relation):
+					U.append(Lw[tagged_sent[i][0]])
+					V.append(Lw[tagged_sent[i+1][0]])
+		
+		#Transformation des matrices U et V en matrices numpy
+		u = np.matrix(U)
+		v = np.matrix(V)
+		#Concaténation des matrices u et v
+		uv = np.hstack((u,v))
+		
+		#Résolution du problème des moindres carrés (Least square)
+		W, residusr, rangr, sr = np.linalg.lstsq(np.dot(uv,w),uv)
+		
+		#Retourner la valeur de la matrice de décomposition de la relation "relation" 
+		return W
 		
 	@staticmethod
 	def compose(u,v,w):
