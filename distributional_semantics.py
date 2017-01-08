@@ -58,15 +58,53 @@ class DistributionalSemantics :
 		return W
 	
 	@staticmethod
-	def decomposition_w(Lp,Lw,relation):
+	def decomposition_w(tagged_sents,tagged_sents_p,Lp,Lw,relation):
 		'''Méthode de calcul de W'r de décomposition
 		En entrée :
+		| tagged_sents : liste de listes de paire mot/tag du corpus d'ou vient Lw 
+		| tagged_sents_p : liste de listes contenant des phrases/tag d'ou vient Lp
 		| Lp : dictionnaire à clé phrases et valeurs vecteurs de sens des phrases
 		| Lw : dictionnaire à clé de mots et valeurs vecteurs de sens des mots
 		| relation : relation syntaxique r de Wr sous la forme de chaine de caractères
 		En sortie :
 		| W : matrice de décomposition pour la relation syntaxique "relation" selon les lexicons
 		'''
+		
+		#Déclaration des matrices des vecteurs des sens des mots composant de la relation 
+		U = []
+		V = []
+		#Déclaration de la matrices des vecteurs de sens des phrases ayant pour tag la relation
+		P = [] 
+		
+		#Recherche des vecteurs de sens représentant les éléments sattisfaisant la relation "relation" :
+		#Parcours de toutes les phrases du corpus
+		for tagged_sent in tagged_sents:
+			#Parcours des mots du corpus à la recherches des bons tags
+			for i in range(0, len(tagged_sent)-1):
+				if(tagged_sent[i][1]+tagged_sent[i+1][1] == relation):
+					U.append(Lw[tagged_sent[i][0]])
+					V.append(Lw[tagged_sent[i+1][0]])
+		
+		#Recherche des vecteurs de sens représentant les phrases ou la relation syntaxique entre les mots est "relation"
+		#Parcours de toutes les phrases dans le corpus des phrases/tag
+		for tagged_sent in tagged_sents_p :
+			#Parcours de tous les mots de la phrase pour voir si il y en a un qui a comme tag "relation"
+			for i in range(0,len(tagged_sent)):
+				if(tagged_sent[i][1] == relation):
+					P.append(Lp[tagged_sent[i][0]])
+						
+		#Transformation des matrices U,V et P en matrices numpy
+		u = np.matrix(U)
+		v = np.matrix(V)
+		p = np.matrix(P)
+		#Concaténation des matrices u et v
+		uv = np.hstack((u,v))
+		
+		#Résolution du problème des moindres carrés (Least square)
+		W, residus, rang, s = np.linalg.lstsq(p,uv)
+		
+		#Retourner la valeur de la matrice de composition de la relation "relation" 
+		return W
 	
 	@staticmethod
 	def decomposition_from_composition_w(Lw,w,relation):
