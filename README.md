@@ -9,6 +9,6 @@ Synthèse et implémentation de "How to make words with vectors: Phrase generati
 Python
 
 ##Libraires utilisées 
-NumPy
-NLTK (Plus précisément nltk.corpus)
-gensim (Plus précisément gensim.models.Word2Vec)
+- NumPy & SciPy
+- NLTK (Plus précisément nltk.corpus)
+- gensim (Plus précisément gensim.models.Word2Vec)
