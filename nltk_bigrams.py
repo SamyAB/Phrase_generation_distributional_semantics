@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+
+#Pour utiliser par défaut le corpus brown
 from nltk.corpus import brown
 
 class NltkBigrams :
@@ -59,7 +63,7 @@ class NltkBigrams :
 		
 		print('Construction de bigram_and_tags')
 		#Parcours des phrases de la même manière que pour les bigrams sans tag
-		for tagged_sent in corpus.tagged_sents():
+		for tagged_sent in corpus.tagged_sents(): #Si corpus de nltk, il vaut mieux stipler le tagset = universal
 			tmp_bigram_and_tags = [(tagged_sent[i][0]+'_'+tagged_sent[i+1][0],tagged_sent[i][1]+tagged_sent[i+1][1]) for i in range(0,len(tagged_sent)-1)]
 			[self.bigram_and_tags.append(bigramtag) for bigramtag in tmp_bigram_and_tags]
 			 
