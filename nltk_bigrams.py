@@ -45,9 +45,9 @@ class NltkBigrams :
 		#Parcours des phrases (Pour ne pas relier des mots en fin de phrase avec les premiers mots des phrases suivantes)
 		for sent in corpus.sents(): #Pour test sur machine non puissante categories = 'science_fiction'
 			#Liaison des mots deux à deux
-			tmp_bigram = [word[i]+'_'+word[i+1] for i in range(0,len(sent)-1)]
+			tmp_bigram = [sent[i]+'_'+sent[i+1] for i in range(0,len(sent)-1)]
 			#Ajout des nouveaux bigrams dans la liste de tous les bigrams
-			[self.bigrams.append(bigram) for bigram in tmp_bigrams]
+			[self.bigrams.append(bigram) for bigram in tmp_bigram]
 		
 		
 	def build_bigram_and_tags(self,corpus = brown) :
@@ -60,7 +60,7 @@ class NltkBigrams :
 		print('Construction de bigram_and_tags')
 		#Parcours des phrases de la même manière que pour les bigrams sans tag
 		for tagged_sent in corpus.tagged_sents():
-			tmp_bigram_and_tags = [(wordtag[i][0]+'_'+wordtag[i+1][0],wordtag[i][1]+wordtag[i+1][1]) for i in range(0,len(tagged_sent)-1)]
+			tmp_bigram_and_tags = [(tagged_sent[i][0]+'_'+tagged_sent[i+1][0],tagged_sent[i][1]+tagged_sent[i+1][1]) for i in range(0,len(tagged_sent)-1)]
 			[self.bigram_and_tags.append(bigramtag) for bigramtag in tmp_bigram_and_tags]
 			 
 		
