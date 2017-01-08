@@ -18,10 +18,10 @@ class NltkBigrams :
 		'''
 		
 		#Définition des attributs
-		bigrams = []
-		bigram_and_tags = []
-		bigram_sents = []
-		tagged_sents_bigram = []
+		self.bigrams = []
+		self.bigram_and_tags = []
+		self.bigram_sents = []
+		self.tagged_sents_bigram = []
 		
 		if(construct):
 			#Construction de la liste bigrams
@@ -37,23 +37,32 @@ class NltkBigrams :
 		'''
 		Méthode de construction de l'attribut bigrams qui est une liste des paire de mots du corpus
 		En entrée :
-		| corpus : objet corpus (possédant une méthode words() qui renvoie la liste des mots du corpus) utliisé pour la construction (par défaut brown de nltk.corpus)
+		| corpus : objet corpus (possédant une méthode sents() qui renvoie la liste des mots du corpus) utliisé pour la construction (par défaut brown de nltk.corpus)
 		'''
 		
 		print('Construction de bigrams')
-		#La construction se résume assez bien en une ligne. On ajoute _ entre les deux tokens
-		self.bigrams = [corpus.words(categories = 'science_fiction')[i]+'_'+corpus.words(categories = 'science_fiction')[i+1] for i in range (0,len(corpus.words(categories = 'science_fiction'))-1)]
+		
+		#Parcours des phrases (Pour ne pas relier des mots en fin de phrase avec les premiers mots des phrases suivantes)
+		for sent in corpus.sents(): #Pour test sur machine non puissante categories = 'science_fiction'
+			#Liaison des mots deux à deux
+			tmp_bigram = [word[i]+'_'+word[i+1] for i in range(0,len(sent)-1)]
+			#Ajout des nouveaux bigrams dans la liste de tous les bigrams
+			[self.bigrams.append(bigram) for bigram in tmp_bigrams]
+		
 		
 	def build_bigram_and_tags(self,corpus = brown) :
 		'''
 		Méthode de construction de l'attribut bigram_and_tags qui est une liste des paire de mots du corpus
 		En entrée :
-		| corpus : objet corpus (possédant une méthode tagged_words() renvoyant une liste de paires mots/tag) utliisé pour la construction (par défaut brown de nltk.corpus)
+		| corpus : objet corpus (possédant une méthode tagged_sents() renvoyant une liste de paires mots/tag) utliisé pour la construction (par défaut brown de nltk.corpus)
 		'''
 		
 		print('Construction de bigram_and_tags')
-		#La consturction se résume en ligne avec _ pour séparer les tokens et rien pour sérparer les tags
-		self.bigram_and_tags = [ (corpus.tagged_words(categories = 'science_fiction')[i][0]+'_'+corpus.tagged_words(categories = 'science_fiction')[i+1][0], corpus.tagged_words(categories = 'science_fiction')[i][1]+corpus.tagged_words(categories = 'science_fiction')[i+1][1]) for i in range (0,len(corpus.words(categories = 'science_fiction'))-1)]
+		#Parcours des phrases de la même manière que pour les bigrams sans tag
+		for tagged_sent in corpus.tagged_sents():
+			tmp_bigram_and_tags = [(wordtag[i][0]+'_'+wordtag[i+1][0],wordtag[i][1]+wordtag[i+1][1]) for i in range(0,len(tagged_sent)-1)]
+			[self.bigram_and_tags.append(bigramtag) for bigramtag in tmp_bigram_and_tags]
+			 
 		
 	def build_bigram_sents(self,corpus = brown) :
 		'''
@@ -64,7 +73,7 @@ class NltkBigrams :
 		
 		print('Consturction de bigram_sents')
 		#Parcours des phrases du corpus
-		for sent in corpus.sents(categories = 'science_fiction'):
+		for sent in corpus.sents():
 			#Pour chacune des phrases n-1 phrases sont générée
 			#Chacune des nouvelles phrase contien un bigramme dans les deux éléments sont reliés par un '_' et le reste inchangé du corpus
 			for i in range(0, len(sent) -1) :
@@ -92,7 +101,7 @@ class NltkBigrams :
 		
 		print('Construction de tagged_sents_bigram')
 		#Parcours des phrases tagguées du corpus
-		for tagged_sent in corpus.tagged_sents(categories = 'science_fiction'):
+		for tagged_sent in corpus.tagged_sents():
 			#Pour chacune des phrases n-1 phrases sont générée
 			#Chacune des nouvelles phrase contien un bigramme dans les deux éléments sont reliés par un '_' et leurs tags concaténés, et le reste inchangé du corpus
 			for i in range(0, len(tagged_sent) -1) :
