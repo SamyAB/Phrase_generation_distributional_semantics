@@ -172,10 +172,10 @@ class DistributionalSemantics :
 		
 		#La décomposition n'est qu'un produit factoriel également
 		uv = np.dot(p,w)
-		
+		UV = np.array(uv)[0]
 		#séparation des vecteurs de sens u et v selon la dimenstion des vecteurs de sens
-		u = uv[0:dim-1]
-		v = uv[dim:-1]
+		u = UV[0:dim]
+		v = UV[dim-1:-1]
 		
 		#retourner les deux vecteurs de sens
 		return u,v

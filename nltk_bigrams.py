@@ -47,7 +47,7 @@ class NltkBigrams :
 		print('Construction de bigrams')
 		
 		#Parcours des phrases (Pour ne pas relier des mots en fin de phrase avec les premiers mots des phrases suivantes)
-		for sent in corpus.sents(): #Pour test sur machine non puissante categories = 'science_fiction'
+		for sent in corpus.sents(categories = 'science_fiction'): #Pour test sur machine non puissante categories = 'science_fiction'
 			#Liaison des mots deux à deux
 			tmp_bigram = [sent[i]+'_'+sent[i+1] for i in range(0,len(sent)-1)]
 			#Ajout des nouveaux bigrams dans la liste de tous les bigrams
@@ -63,7 +63,7 @@ class NltkBigrams :
 		
 		print('Construction de bigram_and_tags')
 		#Parcours des phrases de la même manière que pour les bigrams sans tag
-		for tagged_sent in corpus.tagged_sents(): #Si corpus de nltk, il vaut mieux stipler le tagset = universal
+		for tagged_sent in corpus.tagged_sents(categories = 'science_fiction',tagset = 'universal'): #Si corpus de nltk, il vaut mieux stipler le tagset = 'universal'
 			tmp_bigram_and_tags = [(tagged_sent[i][0]+'_'+tagged_sent[i+1][0],tagged_sent[i][1]+tagged_sent[i+1][1]) for i in range(0,len(tagged_sent)-1)]
 			[self.bigram_and_tags.append(bigramtag) for bigramtag in tmp_bigram_and_tags]
 			 
@@ -77,7 +77,7 @@ class NltkBigrams :
 		
 		print('Consturction de bigram_sents')
 		#Parcours des phrases du corpus
-		for sent in corpus.sents():
+		for sent in corpus.sents(categories = 'science_fiction'):
 			#Pour chacune des phrases n-1 phrases sont générée
 			#Chacune des nouvelles phrase contien un bigramme dans les deux éléments sont reliés par un '_' et le reste inchangé du corpus
 			for i in range(0, len(sent) -1) :
@@ -105,7 +105,7 @@ class NltkBigrams :
 		
 		print('Construction de tagged_sents_bigram')
 		#Parcours des phrases tagguées du corpus
-		for tagged_sent in corpus.tagged_sents():
+		for tagged_sent in corpus.tagged_sents(categories = 'science_fiction',tagset = 'universal'):
 			#Pour chacune des phrases n-1 phrases sont générée
 			#Chacune des nouvelles phrase contien un bigramme dans les deux éléments sont reliés par un '_' et leurs tags concaténés, et le reste inchangé du corpus
 			for i in range(0, len(tagged_sent) -1) :
