@@ -154,15 +154,31 @@ class DistributionalSemantics :
 		| p : vecteur de sens combiné
 		'''
 		
+		#La composition n'est qu'un produit matriciel
+		p = np.dot(np.hstack((u,v)),w)
+		return p
+		
 	@staticmethod
-	def decompose(p,w):
+	def decompose(p,w,dim):
 		'''Méthode permettant d'obtenir deux vecteurs de sens à partir d'un seul vecteur de sens
 		En entrée :
 		| p : vecteur de sens à décomposer
 		| w : matrice de décomposition pour la relation des composant du vecteur p
+		| dim : dimention des vecteurs de sens
 		En sortie :
 		| u : premier vecteur de sens composant p
 		| v : second vecteur de sens composant p
 		'''
+		
+		#La décomposition n'est qu'un produit factoriel également
+		uv = np.dot(p,w)
+		
+		#séparation des vecteurs de sens u et v selon la dimenstion des vecteurs de sens
+		u = uv[0:dim-1]
+		v = uv[dim:-1]
+		
+		#retourner les deux vecteurs de sens
+		return u,v
+		
 		
 	
