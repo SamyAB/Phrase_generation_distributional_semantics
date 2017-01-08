@@ -34,7 +34,13 @@ P = ds.compose(unigram_model["new"],unigram_model["ones"],W)
 
 #Calcul de décomposition du vecteur P selon W2
 u1 , v1 = ds.decompose(P,W2,100)
+print(ds.nearest_n(unigram_model,u1))
+print(ds.nearest_n(unigram_model,v1))
 
 #Calcul de décomposition du vecteur P selon W3
 u2 , v2 = ds.decompose(P,W3,100)
+print(ds.nearest_n(unigram_model,u2))
+print(ds.nearest_n(unigram_model,v2))
+
+#Malheureusement les résultats ne sont pas satisfiant car les corpus pris pour les entrainement sont beaucoup trop petits (Et cela semble évident)
 

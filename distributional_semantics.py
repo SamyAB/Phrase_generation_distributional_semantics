@@ -3,6 +3,7 @@
 
 #Pour tout ce qui est calcul matriciel on importe numpy
 import numpy as np
+import scipy as sp
 
 class DistributionalSemantics :
 	'''Classe contenant les méthodes statiques de Semantique Distributionnelle		
@@ -180,5 +181,27 @@ class DistributionalSemantics :
 		#retourner les deux vecteurs de sens
 		return u,v
 		
+	@staticmethod
+	def nearest_n(Lw,v):
+		'''Méthode permettant de retrouver le mot le plus proche dans le lexique selon le vecteur de sens
+		En entrée :
+		| Lw : model Word2Vect contenant le lexique des mots, dictionnaire ou les clés sont des mots et les valeurs sont des vecteurs 
+		| v : vecteur de sens à approximé
+		En sortie :
+		| mot : chaine de caractère représentant le mot le plus proche dans le lexique
+		'''
 		
+		#Initialisation de la distance maximum à la disantce entre un élément du lexique et le vecteur
+		mot = list(Lw.vocab.keys())[0]
+		dist_min = sp.spatial.distance.euclidean(Lw[mot],v)
+		
+		#Parcours du vocabulaire
+		for word in Lw.vocab.keys() :
+			tmp_dist = sp.spatial.distance.euclidean(Lw[word],v)
+			if(tmp_dist < dist_min):
+				dist_min = tmp_dist
+				mot = word
+		
+		#Renvoyer le mot le plus proche dans le lexique
+		return mot
 	
